@@ -13,14 +13,14 @@ namespace fs = std::filesystem;
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 
-#include"Texture.h"
+#include"Textureman.h"
 #include"shaderClass.h"
-#include"VAO.h"
-#include"VBO.h"
-#include"EBO.h"
+#include"VAOman.h"
+#include"VBOman.h"
+#include"EBOman.h"
 #include"Camera.h"
 
-
+void processInput(GLFWwindow* window);
 
 const unsigned int width = 800;
 const unsigned int height = 800;
@@ -108,12 +108,12 @@ int main()
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
 	// Generates Vertex Array Object and binds it
-	VAO VAO1;
+	VAOman VAO1;
 	VAO1.Bind();
 	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO1(vertices, sizeof(vertices));
+	VBOman VBO1(vertices, sizeof(vertices));
 	// Generates Element Buffer Object and links it to indices
-	EBO EBO1(indices, sizeof(indices));
+	EBOman EBO1(indices, sizeof(indices));
 	// Links VBO attributes such as coordinates and colors to VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -128,12 +128,12 @@ int main()
 	// Shader for light cube
 	Shader lightShader("light.vert", "light.frag");
 	// Generates Vertex Array Object and binds it
-	VAO lightVAO;
+	VAOman lightVAO;
 	lightVAO.Bind();
 	// Generates Vertex Buffer Object and links it to vertices
-	VBO lightVBO(lightVertices, sizeof(lightVertices));
+	VBOman lightVBO(lightVertices, sizeof(lightVertices));
 	// Generates Element Buffer Object and links it to indices
-	EBO lightEBO(lightIndices, sizeof(lightIndices));
+	EBOman lightEBO(lightIndices, sizeof(lightIndices));
 	// Links VBO attributes such as coordinates and colors to VAO
 	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
 	// Unbind all to prevent accidentally modifying them
@@ -180,9 +180,9 @@ int main()
 	//planksSpec.texUnit(shaderProgram, "tex1", 1);
 
 	// Original code from the tutorial
-	Texture planksTex("planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	Textureman planksTex("planks.png", GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	planksTex.texUnit(shaderProgram, "tex0", 0);
-	Texture planksSpec("planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
+	Textureman planksSpec("planksSpec.png", GL_TEXTURE_2D, 1, GL_RED, GL_UNSIGNED_BYTE);
 	planksSpec.texUnit(shaderProgram, "tex1", 1);
 
 
@@ -207,6 +207,7 @@ int main()
 		// Updates and exports the camera matrix to the Vertex Shader
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 
+		processInput(window);
 
 		// Tells OpenGL which Shader Program we want to use
 		shaderProgram.Activate();
@@ -258,4 +259,10 @@ int main()
 	// Terminate GLFW before ending the program
 	glfwTerminate();
 	return 0;
+}
+
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
 }

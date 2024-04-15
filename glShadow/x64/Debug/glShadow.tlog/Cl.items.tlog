@@ -1,9 +1,15 @@
 C:\Users\justin\source\repos\glShadow\glShadow\Camera.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\Camera.obj
 C:\Users\justin\source\repos\glShadow\glShadow\EBO.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\EBO.obj
+C:\Users\justin\source\repos\glShadow\glShadow\EBOman.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\EBOman.obj
 C:\Users\justin\source\repos\glShadow\glShadow\glad.c;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\glad.obj
 C:\Users\justin\source\repos\glShadow\glShadow\Main.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\Main.obj
+C:\Users\justin\source\repos\glShadow\glShadow\Mesh.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\Mesh.obj
+C:\Users\justin\source\repos\glShadow\glShadow\Model.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\Model.obj
 C:\Users\justin\source\repos\glShadow\glShadow\shaderClass.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\shaderClass.obj
 C:\Users\justin\source\repos\glShadow\glShadow\stb.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\stb.obj
 C:\Users\justin\source\repos\glShadow\glShadow\Texture.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\Texture.obj
+C:\Users\justin\source\repos\glShadow\glShadow\Textureman.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\Textureman.obj
 C:\Users\justin\source\repos\glShadow\glShadow\VAO.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\VAO.obj
+C:\Users\justin\source\repos\glShadow\glShadow\VAOman.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\VAOman.obj
 C:\Users\justin\source\repos\glShadow\glShadow\VBO.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\VBO.obj
+C:\Users\justin\source\repos\glShadow\glShadow\VBOman.cpp;C:\Users\justin\source\repos\glShadow\glShadow\x64\Debug\VBOman.obj
