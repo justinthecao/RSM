@@ -3,6 +3,7 @@
 
 #include<glm/glm.hpp>
 #include<glad/glad.h>
+#include <iostream>
 #include<vector>
 
 // Structure to standardize the vertices used in the meshes
@@ -12,6 +13,20 @@ struct Vertex
 	glm::vec3 normal;
 	glm::vec3 color;
 	glm::vec2 texUV;
+	void printVec3(glm::vec3 vec) {
+		std::cout << vec.x << " " << vec.y << " " << vec.z << std::endl;
+	}
+	void printVertex() {
+		std::cout << "Position: ";
+		printVec3(position);
+		std::cout << std::endl; 
+		std::cout << "Normal: ";
+		printVec3(normal);
+		std::cout << std::endl; 
+		std::cout << "Color: ";
+		printVec3(color);
+		std::cout << std::endl;
+	}
 };
 
 

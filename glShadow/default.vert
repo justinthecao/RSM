@@ -19,16 +19,29 @@ out vec3 Normal;
 // Outputs the current position for the Fragment Shader
 out vec3 crntPos;
 
+out SHADEROUT{
+	vec3 FragPos;
+	vec3 Normal;
+	vec2 TexCoords;
+	vec4 FragPosLightSpace;
+
+} shaderout;
+
 // Imports the camera matrix from the main function
 uniform mat4 camMatrix;
 // Imports the model matrix from the main function
 uniform mat4 model;
 
+uniform mat4 translationMain;
+uniform mat4 rotationMain;
+uniform mat4 scaleMain;
+uniform mat4 lightSpaceMatrix;
+
 
 void main()
 {
 	// calculates current position
-	crntPos = vec3(model * vec4(aPos, 1.0f));
+	crntPos = vec3(translationMain * rotationMain *  scaleMain * model * vec4(aPos, 1.0f));
 	// Outputs the positions/coordinates of all vertices
 	gl_Position = camMatrix * vec4(crntPos, 1.0);
 
@@ -38,4 +51,10 @@ void main()
 	texCoord = aTex;
 	// Assigns the normal from the Vertex Data to "Normal"
 	Normal = aNormal;
+
+	shaderout.FragPos = crntPos;
+	shaderout.Normal = Normal;
+	shaderout.TexCoords = aTex;
+	shaderout.FragPosLightSpace = lightSpaceMatrix * vec4(crntPos, 1.0f);
+
 }

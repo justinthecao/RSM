@@ -10,8 +10,10 @@ Model::Model(const char* file)
 	Model::file = file;
 	data = getData();
 
+
 	// Traverse all nodes
-	traverseNode(0);
+	traverseNode(JSON["nodes"].size() - 1);
+
 }
 
 void Model::Draw(Shader& shader, Camera& camera)
@@ -311,13 +313,17 @@ std::vector<glm::vec2> Model::groupFloatsVec2(std::vector<float> floatVec)
 	}
 	return vectors;
 }
+
 std::vector<glm::vec3> Model::groupFloatsVec3(std::vector<float> floatVec)
 {
 	std::vector<glm::vec3> vectors;
 	for (int i = 0; i < floatVec.size(); i)
 	{
+		
 		vectors.push_back(glm::vec3(floatVec[i++], floatVec[i++], floatVec[i++]));
+		//printVec3(vectors.back());
 	}
+	
 	return vectors;
 }
 std::vector<glm::vec4> Model::groupFloatsVec4(std::vector<float> floatVec)
@@ -326,6 +332,6 @@ std::vector<glm::vec4> Model::groupFloatsVec4(std::vector<float> floatVec)
 	for (int i = 0; i < floatVec.size(); i)
 	{
 		vectors.push_back(glm::vec4(floatVec[i++], floatVec[i++], floatVec[i++], floatVec[i++]));
-	}
+	} 
 	return vectors;
 }

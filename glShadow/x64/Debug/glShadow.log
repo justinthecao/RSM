@@ -1,22 +1,2 @@
-﻿  Camera.cpp
-  EBO.cpp
-  EBOman.cpp
-  Main.cpp
-  Mesh.cpp
-C:\Users\justin\source\repos\glShadow\glShadow\Mesh.cpp(80,43): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Model.cpp
-C:\Users\justin\source\repos\glShadow\glShadow\Model.cpp(262,91): warning C4267: 'argument': conversion from 'size_t' to 'GLuint', possible loss of data
-C:\Users\justin\source\repos\glShadow\glShadow\Model.cpp(270,93): warning C4267: 'argument': conversion from 'size_t' to 'GLuint', possible loss of data
-  shaderClass.cpp
-  stb.cpp
-  Texture.cpp
-  Textureman.cpp
-  VAO.cpp
-C:\Users\justin\source\repos\glShadow\glShadow\VAO.cpp(13,63): warning C4244: 'argument': conversion from 'GLsizeiptr' to 'GLsizei', possible loss of data
-  VAOman.cpp
-C:\Users\justin\source\repos\glShadow\glShadow\VAOman.cpp(13,63): warning C4244: 'argument': conversion from 'GLsizeiptr' to 'GLsizei', possible loss of data
-  VBO.cpp
-  VBOman.cpp
-  Generating Code...
-  glad.c
+﻿  Main.cpp
   glShadow.vcxproj -> C:\Users\justin\source\repos\glShadow\x64\Debug\glShadow.exe

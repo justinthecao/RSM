@@ -115,5 +115,17 @@
     <None Include="light.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="model.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="model.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="depthShader.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="depthShader.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
