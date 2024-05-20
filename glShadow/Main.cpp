@@ -35,7 +35,10 @@ const float baseSize = 1.0f;
 
 const float lightSize = 0.2f;
 
-const std::string modelName = "rsm.gltf";
+const std::string modelName = "ballcubes.gltf";
+
+
+
 
 // Vertices coordinates
 GLfloat vertices[] =
@@ -45,17 +48,17 @@ GLfloat vertices[] =
 	 baseSize, 0.0f, -baseSize,			1.0f,1.0f,1.0f,		baseSize, baseSize,		0.0f,1.0f, 0.0f,
 	 baseSize, 0.0f,  baseSize,			1.0f,1.0f,1.0f,		baseSize,  0.0f,		0.0f,1.0f, 0.0f,
 	 baseSize, 2*baseSize-0.3f, baseSize,	1.0f, 0.0f, 0.0f,		0.0f,   0.0f,			-1.0f, 0.0f, 0.0f,
-	 baseSize, 0.0f, -baseSize,			1.0f, 0.0f, 0.0f,       0.0f,  baseSize,		-1.0f, 0.0f, 0.0f,
-	 baseSize, 0.0f, baseSize,			1.0f, 0.0f, 0.0f,		baseSize, baseSize,		-1.0f, 0.0f, 0.0f,
+	 baseSize, 0.0f, -baseSize,				1.0f, 0.0f, 0.0f,       0.0f,  baseSize,		-1.0f, 0.0f, 0.0f,
+	 baseSize, 0.0f, baseSize,				1.0f, 0.0f, 0.0f,		baseSize, baseSize,		-1.0f, 0.0f, 0.0f,
 	 baseSize, 2*baseSize-0.3f, -baseSize,	1.0f, 0.0f, 0.0f,		baseSize,  0.0f,		-1.0f, 0.0f, 0.0f,
-	 -baseSize, 0.0f, -baseSize,		0.0f, 1.0f, 0.0f,		0.0f,   0.0f,			0.0f, 0.0f, 1.0f,
+	 -baseSize, 0.0f, -baseSize,			0.0f, 1.0f, 0.0f,		0.0f,   0.0f,			0.0f, 0.0f, 1.0f,
 	 -baseSize,2*baseSize-0.3f, -baseSize,	0.0f, 1.0f, 0.0f,       0.0f,  baseSize,		0.0f, 0.0f, 1.0f,
-	 baseSize, 0.0f, -baseSize,			0.0f, 1.0f, 0.0f,		baseSize, baseSize,		0.0f, 0.0f, 1.0f,
-	 baseSize, 2*baseSize-0.3f, -baseSize, 0.0f, 1.0f, .0f,		baseSize,  0.0f,		0.0f, 0.0f, 1.0f,
-	 -baseSize, 0.0f, -baseSize,		0.0f, 0.0f, 1.0f,		0.0f,   0.0f,			1.0f, 0.0f, 0.0f,
+	 baseSize, 0.0f, -baseSize,				0.0f, 1.0f, 0.0f,		baseSize, baseSize,		0.0f, 0.0f, 1.0f,
+	 baseSize, 2*baseSize-0.3f, -baseSize,  0.0f, 1.0f, .0f,		baseSize,  0.0f,		0.0f, 0.0f, 1.0f,
+	 -baseSize, 0.0f, -baseSize,			0.0f, 0.0f, 1.0f,		0.0f,   0.0f,			1.0f, 0.0f, 0.0f,
 	 -baseSize,2 * baseSize -0.3f, -baseSize,	0.0f, 0.0f, 1.0f,       0.0f,  baseSize,		1.0f, 0.0f, 0.0f,
-	 -baseSize, 0.0f, baseSize,			0.0f, 0.0f, 1.0f,		baseSize, baseSize,		1.0f, 0.0f, 0.0f,
-	 -baseSize, 2 * baseSize -0.3f, baseSize, 0.0f, 0.0f, 1.0f,		baseSize,  0.0f,		1.0f, 0.0f, 0.0f
+	 -baseSize, 0.0f, baseSize,					0.0f, 0.0f, 1.0f,		baseSize, baseSize,		1.0f, 0.0f, 0.0f,
+	 -baseSize, 2 * baseSize -0.3f, baseSize, 0.0f, 0.0f, 1.0f,		baseSize,  0.0f,		1.0f, 0.0f, 0.0f,
 };
 
 
@@ -175,8 +178,9 @@ bool moveLight = false;
 bool toggleReturn = false;
 glm::vec3 lightPos = glm::vec3(0.0f, lightHeight, 0.0f);
 glm::mat4 lightTranslation = glm::translate(glm::mat4(1.0), lightPos);
-
-
+std::vector<std::pair<float, float>> pseudos;
+int rsmSamples = 600;
+int radiusSize = 300;
 int main()
 {
 	// Initialize GLFW
@@ -289,6 +293,8 @@ int main()
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "rotationMain"), 1, GL_FALSE, glm::value_ptr(rotationMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "scaleMain"), 1, GL_FALSE, glm::value_ptr(scaleMatrix));
 	glUniform1i(glGetUniformLocation(shaderProgram.ID, "isFloor"), true);
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "NUM_SAMPLES"), rsmSamples);
+	
 	shaderProgramModel.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramModel.ID, "model"), 1, GL_FALSE, glm::value_ptr(modelModel));
 	glUniform4f(glGetUniformLocation(shaderProgramModel.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
@@ -298,6 +304,9 @@ int main()
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramModel.ID, "translationMain"), 1, GL_FALSE, glm::value_ptr(modelTranslation));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramModel.ID, "rotationMain"), 1, GL_FALSE, glm::value_ptr(modelRotation));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgramModel.ID, "scaleMain"), 1, GL_FALSE, glm::value_ptr(modelScale));
+	glUniform1i(glGetUniformLocation(shaderProgramModel.ID, "NUM_SAMPLES"), rsmSamples);
+
+	
 	/*
 	* I'm doing this relative path thing in order to centralize all the resources into one folder and not
 	* duplicate them between tutorial folders. You can just copy paste the resources from the 'Resources'
@@ -320,7 +329,12 @@ int main()
 	planksSpec.texUnit(shaderProgram, "tex1", 1);
 
 
-	glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex2"), 2);
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "depthMap"), 2);
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "normalMap"), 3);
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "fluxMap"), 4);
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "coordMap"), 5);
+
+
 	
 
 
@@ -333,9 +347,15 @@ int main()
 	std::string current = (fs::current_path()).string();
 	Model model((current + "/models/balls/" + modelName).c_str());
 
-	Textureman ballTex((current + "/models/balls/baseColor.png").c_str(), GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	Textureman ballTex((current + "/models/balls/rainbow.jpg").c_str(), GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 	ballTex.texUnit(shaderProgramModel, "tex0", 0);
-	glUniform1i(glGetUniformLocation(shaderProgramModel.ID, "tex2"), 2);
+	glUniform1i(glGetUniformLocation(shaderProgramModel.ID, "depthMap"), 2);
+	glUniform1i(glGetUniformLocation(shaderProgramModel.ID, "normalMap"), 3);
+
+	glUniform1i(glGetUniformLocation(shaderProgramModel.ID, "fluxMap"), 4);
+
+	glUniform1i(glGetUniformLocation(shaderProgramModel.ID, "coordMap"), 5);
+
 
 	unsigned int depthMapFBO;
 	glGenFramebuffers(1, &depthMapFBO);
@@ -366,7 +386,7 @@ int main()
 	unsigned int fluxMap;
 	glGenTextures(1, &fluxMap);
 	glBindTexture(GL_TEXTURE_2D, fluxMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_RED, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_RGB, GL_FLOAT, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -376,7 +396,7 @@ int main()
 	unsigned int coordMap;
 	glGenTextures(1, &coordMap);
 	glBindTexture(GL_TEXTURE_2D, coordMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_RGB, GL_FLOAT, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -401,6 +421,30 @@ int main()
 	auto t1 = std::chrono::high_resolution_clock::now();
 	int count = 0;
 
+	srand(4);
+	for (int i = 0; i < rsmSamples; i++) {
+		float alpha = rand()*1.0f/RAND_MAX;
+		float beta = rand()*1.0f/RAND_MAX;
+		std::cout << "AlPHA: " << alpha << "BETA: " << beta << std::endl;
+		pseudos.push_back({ radiusSize * alpha * glm::sin(2 * PI * beta),radiusSize * alpha * glm::cos(2 * PI * beta) });
+	}
+
+	for (auto i : pseudos) {
+		std::cout << i.first << " " << i.second << std::endl;
+	}
+	
+	GLuint ubo;
+	glGenBuffers(1, &ubo);
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(std::pair<float, float>) * pseudos.size(), pseudos.data(), GL_STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo);
+
+	shadowShader.Activate();
+	glUniformBlockBinding(shadowShader.ID, glGetUniformBlockIndex(shadowShader.ID, "pseudos"), 0);
+	glUniform3f(glGetUniformLocation(shadowShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	shaderProgramModel.Activate();
+	glUniformBlockBinding(shaderProgramModel.ID, glGetUniformBlockIndex(shaderProgramModel.ID, "pseudos"), 0);
+	
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -428,6 +472,9 @@ int main()
 
 			shaderProgramModel.Activate();
 			glUniform3f(glGetUniformLocation(shaderProgramModel.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+			
+			shadowShader.Activate();
+			glUniform3f(glGetUniformLocation(shadowShader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 		}
 		else {
@@ -465,14 +512,18 @@ int main()
 		
 		glViewport(0,0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		{	
+			glUniform1i(glGetUniformLocation(shadowShader.ID, "isFloor"), false);
+
 			glUniformMatrix4fv(glGetUniformLocation(shadowShader.ID, "translationMain"), 1, GL_FALSE, glm::value_ptr(modelTranslation));
 			model.Draw(shadowShader, camera);
-			/*VAO1.Bind();
+			glUniform1i(glGetUniformLocation(shadowShader.ID, "isFloor"), true);
+
+			VAO1.Bind();
 			glUniformMatrix4fv(glGetUniformLocation(shadowShader.ID, "translationMain"), 1, GL_FALSE, glm::value_ptr(translationMatrix));
 			glUniformMatrix4fv(glGetUniformLocation(shadowShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(translationMatrix));
-			glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);*/
+			glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
 		}
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -483,11 +534,12 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		debugDepthQuad.Activate();
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
-		renderQuad();*/
+		renderQuad();
+		*/
 
-		
 		//RENDER REALLY NOW ------------------------------------
 		// 
 		//return back to og
@@ -508,6 +560,14 @@ int main()
 		planksSpec.Bind();
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, normalMap);
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, fluxMap);
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, coordMap);
+
+
 
 		// Bind the VAO so OpenGL knows to use it
 		VAO1.Bind();
@@ -519,6 +579,12 @@ int main()
 		ballTex.Bind();
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, normalMap);
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, fluxMap);
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, coordMap);
 		glUniform3f(glGetUniformLocation(shaderProgramModel.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgramModel.ID, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightProjMat));
 		glUniform2f(glGetUniformLocation(shaderProgramModel.ID, "shadowMapSize"), SHADOW_WIDTH, SHADOW_HEIGHT);
@@ -583,7 +649,7 @@ void processInput(GLFWwindow* window)
 		moveLight = false;
 		moveCam = false;
 	}
-	if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 		moveLight = true;
 	}
 
@@ -637,8 +703,8 @@ void moveLightPos(GLFWwindow* window)
 	}
 	lightPos.y = std::max(2*baseSize-0.2f, lightPos.y);
 	lightPos.y = std::min(5.0f, lightPos.y);
-	lightPos.x = glm::clamp(lightPos.x, -baseSize+0.1f, baseSize - 0.1f);
-	lightPos.z = glm::clamp(lightPos.z, -baseSize+0.1f, baseSize - 0.1f);
+	lightPos.x = glm::clamp(lightPos.x, -baseSize+0.3f, baseSize - 0.3f);
+	lightPos.z = glm::clamp(lightPos.z, -baseSize+0.3f, baseSize - 0.3f);
 
 	lightTranslation = glm::translate(glm::mat4(1.0), lightPos);
 

@@ -23,8 +23,10 @@ uniform mat4 camMatrix; //not used
 
 
 void main(){
-    gl_Position = lightSpaceMatrix * translationMain * model * vec4(aPos, 1.0);
+	crntPos = vec3(translationMain * model * vec4(aPos, 1.0f));
+
+    gl_Position = lightSpaceMatrix * vec4(crntPos, 1.0f);
     //gl_Position =  model * vec4(aPos, 1.0);
     Normal = aNormal;
-    crntPos = aPos;
+    color = aColor;
 }
